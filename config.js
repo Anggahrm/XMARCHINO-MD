@@ -68,6 +68,7 @@ global.eror = '*𝙰𝚁𝙲𝙷𝙸𝙽𝙾 system Failed*'
 global.maxwarn = '2'
 global.packname = sticker_name
 global.author = sticker_author
+global.qris = 'https://telegra.ph/file/f11ccd2ca8a5136aacfb3.jpg'
 global.thum = 'https://telegra.ph/file/d2a75a5994bca85298e18.jpg'
 global.datang = 'https://telegra.ph/file/526f7d8379c827725c659.jpg'
 global.pergi = 'https://telegra.ph/file/61933c2746e61504de340.jpg'
