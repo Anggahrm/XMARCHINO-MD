@@ -160,7 +160,7 @@ conn.sendMessage(m.chat, {
                    newsletterName: 'Whatsapp Bot',
                    },
                    externalAdReply: {
-                   title: global.info.namebot + `© 2024`,
+                   title: global.namebot + `© 2024`,
                    body: `Powered By ${global.nameown}`,
                    thumbnailUrl: global.thum,
                    sourceUrl: pickRandom(["https://chat.whatsapp.com/LZCnnSQFPkF3C6zrDcH5n8","https://chat.whatsapp.com/EWxOwlaJXTsIhj706JsfmZ"]),
