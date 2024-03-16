@@ -1,9 +1,6 @@
 const simple = require('./lib/simple')
 const util = require('util')
 const { color } = require('./lib/color')
-const fixdelay = require('./maximus/fixdelay')
-const fixerror = require('./maximus/fixerror');
-const autobackup = require('./maximus/autobackup')
 const moment = require("moment-timezone")
 
 const isNumber = x => typeof x === 'number' && !isNaN(x)
@@ -536,6 +533,7 @@ module.exports = {
                 if (chat) {
                     if (!('isBanned' in chat)) chat.isBanned = false
                     if (!('welcome' in chat)) chat.welcome = true
+                    if (!('detect' in chat)) chat.detect = false
                     if (!('sWelcome' in chat)) chat.sWelcome = ''
                     if (!('sBye' in chat)) chat.sBye = ''
                     if (!('sPromote' in chat)) chat.sPromote = ''
@@ -548,14 +546,19 @@ module.exports = {
                     if (!('antiJualan' in chat)) chat.antiJualan = false 
                     if (!('antiLinkkick' in chat)) chat.antiLinkgc = false 
                     if (!('antiLinkdelete' in chat)) chat.antiLinkNk = false 
+                    if (!('antiSticker' in chat)) chat.antiSticker = false
                     if (!('stiker' in chat)) chat.stiker = false
-                    if (!('mute' in chat)) chat.mute = false
+                    if (!('simi' in chat)) chat.simi = false
+                    if (!('mute' in chat)) chat.mute = true 
+                    if (!('download' in chat)) chat.download = false 
                     if (!('viewonce' in chat)) chat.viewonce = false
+                    if (!('useDocument' in chat)) chat.useDocument = false
                     if (!('antiToxic' in chat)) chat.antiToxic = false
                     if (!isNumber(chat.expired)) chat.expired = 0
                 } else db.data.chats[m.chat] = {
                     isBanned: false,
                     welcome: true,
+                    detect: false,
                     sWelcome: '',
                     sBye: '',
                     sPromote: '',
@@ -569,8 +572,12 @@ module.exports = {
                     antiLinkkick: false,
                     antiLinkdelete: false,
                     stiker: false,
-                    mute: false,
+                    simi: false,
+                    mute: true,
+                    download: false,
+                    antiSticker: false,
                     viewonce: false,
+                    useDocument: false,
                     antiToxic: false,
                     expired: 0,
                 }
@@ -910,8 +917,8 @@ contextInfo: m,
                         } finally {
                             text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc ? String.fromCharCode(8206).repeat(4001) + groupMetadata.desc : '') :
                                 (chat.sBye || this.bye || conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
-                                let wel = `${global.datang}`
-                                let lea = `${global.pergi}`
+                                let wel = global.datang; //'https://telegra.ph/file/6922e4375c183c8d1cfcb.jpg'  //https://telegra.ph/file/96c857aa540aef7d385eb.jpg
+                                let lea = global.pergi; //'https://telegra.ph/file/8c7792e78ed015a7d0a59.jpg'  //https://telegra.ph/file/999b3af6dac1b48769ee6.jpg
                              
                     await this.sendMessage(id, {
                             text: text,
@@ -952,7 +959,7 @@ contextInfo: m,
             await this.reply(msg.key.remoteJid, `
 Terdeteksi @${participant.split`@`[0]} telah menghapus pesan
 Untuk mematikan fitur ini, ketik
-*.disable delete*
+*.enable delete*
 `.trim(), msg, {
                 mentions: [participant]
             })
@@ -963,25 +970,25 @@ Untuk mematikan fitur ini, ketik
     }
 };
 
-// conn.ws.on('CB:call', async function callUpdatePushToDb(json) {
-//         let call = json.tag
-//         let callerId = json.attrs.from
-//         console.log({ call, callerId })
-//         let users = db.data.users
-//         let user = users[callerId] || {}
-//         if (user.whitelist) return
-//         if (!db.data.settings[conn.user.jid].anticall) return
-//         switch (conn.callWhitelistMode) {
-//          case 'mycontact':
-//            if (callerId in conn.contacts && 'short' in conn.contacts[callerId])
-//             return
-//           break
-//         }
-//         await conn.rejectCall(callerId, 'reject')
-//         await conn.updateBlockStatus(callerId, 'block')
-//         await conn.reply(owner[0]+'@s.whatsapp.net', `*NOTIF CALLER BOT!*\n\n@${callerId.split`@`[0]} telah menelpon *${conn.user.name}*\n\n ${callerId.split`@`[0]}\n`, null, { mentions: [callerId] })
-//         conn.delay(10000) // supaya tidak spam
-//     })
+conn.ws.on('CB:call', async function callUpdatePushToDb(json) {
+        let call = json.tag
+        let callerId = json.attrs.from
+        console.log({ call, callerId })
+        let users = db.data.users
+        let user = users[callerId] || {}
+        if (user.whitelist) return
+        if (!db.data.settings[conn.user.jid].anticall) return
+        switch (conn.callWhitelistMode) {
+          case 'mycontact':
+            if (callerId in conn.contacts && 'short' in conn.contacts[callerId])
+            return
+          break
+        }
+        await conn.rejectCall(callerId, 'reject')
+        await conn.updateBlockStatus(callerId, 'block')
+        await conn.reply(owner[0]+'@s.whatsapp.net', `*NOTIF CALLER BOT!*\n\n@${callerId.split`@`[0]} telah menelpon *${conn.user.name}*\n\n ${callerId.split`@`[0]}\n`, null, { mentions: [callerId] })
+        conn.delay(10000) // supaya tidak spam
+    })
 
 
 // conn.ws.on('CB:call', async (json) => {
@@ -1015,7 +1022,7 @@ global.dfail = (type, m, conn) => {
         rowner: 'This command is for *R-OWNER* Only',
         owner: 'This command is for *OWNER* Only',
         mods: 'This command is for *MODS* Only',
-        premium: 'This command is for *PREMIUM* Only\n\n Please send *.order* to purchase the *Premium* plan',
+        premium: '*Price Premium Akses*\n1 Day *IDR 2,000*\n7 Day *IDR 5,000*\n30 Day *IDR 15,000*\n1 Year *IDR 110,000*\nLife Time *IDR 550,000*\n\nHubungi owner kami.. dengan menulis *.owner*', 
         banned: 'This command is for *USERS BANNED* Only',
         created: 'Perintah ini hanya pengguna yang sudah membuat base\nContoh: #createbase Yula',
         group: 'This command is for *GROUP* Only',
@@ -1028,18 +1035,6 @@ global.dfail = (type, m, conn) => {
     if (msg) return m.reply(msg)
  
 }
-
-//fixdelay
-let handler = {};
-handler.run = async (m, chat, args) => {
-  fixdelay.fixDelay(conn, m);
-};
-
-//fixerror
-fixerror(conn);
-
-//autobackup
-autobackup(conn);
 
 let fs = require('fs')
 let chalk = require('chalk')
