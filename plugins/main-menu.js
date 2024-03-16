@@ -157,7 +157,7 @@ conn.sendMessage(m.chat, {
                    forwardedNewsletterMessageInfo: {
                    newsletterJid: '120363241570452835@newsletter',
                    serverMessageId: null,
-                   newsletterName: 'Whatsapp Bot,
+                   newsletterName: 'Whatsapp Bot',
                    },
                    externalAdReply: {
                    title: global.info.namebot + `© 2024`,
