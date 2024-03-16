@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+let fetch = require('node-fetch');
 
 let handler = async (m, { conn, usedPrefix, command }) => {
 	try {
@@ -37,4 +37,4 @@ handler.command = /^(sc|script)$/i
 handler.register = false;
 handler.premium = false;
 
-export default handler;
+module.exports = handler;
