@@ -18,6 +18,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       chat.welcome = isEnable
       break
+    case 'antidelete':
     case 'delete':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
