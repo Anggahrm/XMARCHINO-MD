@@ -13,7 +13,6 @@ mods = ['6288225750488', '6281288180416']
 prems = ['6288225750488', '6281288180416']
 
   // APIKEYS
-global.lolkey = 'apikeylu'
 global.lann = 'apikeylu'
 global.btc = 'apikeylu'
 global.rose = 'apikeylu'
