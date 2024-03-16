@@ -7,10 +7,10 @@ owner = [
 ]
 
   // MODERATOR
-mods = ['6288225750488', '6281288180416'] 
+mods = ['6281283516246'] 
 
   // PREMIUM USERS
-prems = ['6288225750488', '6281288180416']
+prems = ['6281283516246']
 
   // APIKEYS
 global.lann = 'apikeylu'
